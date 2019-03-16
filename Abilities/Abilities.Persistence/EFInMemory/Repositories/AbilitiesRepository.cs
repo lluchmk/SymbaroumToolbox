@@ -31,8 +31,27 @@ namespace Abilities.Persistence.EFInMemory.Repositories
             where TSkill : BaseAbility
         {
             return string.IsNullOrWhiteSpace(query.Name) ?
-                await dbSet.ToListAsync() :
-                await dbSet.Where(s => s.Name.Contains(query.Name)).ToListAsync();
+                await dbSet.ToListAsync(cancellationToken) :
+                await dbSet.Where(s => s.Name.Contains(query.Name)).ToListAsync(cancellationToken);
+        }
+
+        public async Task<int> CreateAbility(Ability ability, CancellationToken cancellationToken) =>
+            await Create(ability, _context.Abilities, cancellationToken);
+
+        public async Task<int> CreateMysticalPower(MysticalPower mysticalPower, CancellationToken cancellationToken) =>
+            await Create(mysticalPower, _context.MysticalPowers, cancellationToken);
+
+        public async Task<int> CreateRitual(Ritual ritual, CancellationToken cancellationToken) =>
+            await Create(ritual, _context.Rituals, cancellationToken);
+
+        public async Task<int> Create<TSkill>(TSkill baseAbility, DbSet<TSkill> dbSet, CancellationToken cancellationToken)
+            where TSkill : BaseAbility
+        {
+            await dbSet.AddAsync(baseAbility, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var createdId = baseAbility.Id;
+            return createdId;
         }
     }
 }

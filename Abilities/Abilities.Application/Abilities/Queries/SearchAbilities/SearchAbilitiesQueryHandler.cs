@@ -1,5 +1,4 @@
 ﻿using Abilities.Application.Abilities.Queries.Dtos;
-using Abilities.Application.Abilities.Queries.Enums;
 using Abilities.Application.Interfaces.Repositories;
 using Abilities.Domain.Entities;
 using AutoMapper;

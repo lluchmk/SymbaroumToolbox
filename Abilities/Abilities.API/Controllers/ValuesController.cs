@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Abilities.API.Controllers
@@ -40,6 +41,13 @@ namespace Abilities.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [Authorize]
+        [HttpGet("identity")]
+        public IActionResult Identity()
+        {
+            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
     }
 }

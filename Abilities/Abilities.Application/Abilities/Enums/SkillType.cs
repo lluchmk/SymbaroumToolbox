@@ -1,4 +1,4 @@
-﻿namespace Abilities.Application.Abilities.Queries.Enums
+﻿namespace Abilities.Application.Abilities.Enums
 {
     public enum SkillType
     {

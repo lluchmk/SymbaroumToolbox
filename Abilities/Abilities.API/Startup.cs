@@ -20,6 +20,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using IdentityServer4.AccessTokenValidation;
+
 namespace Abilities.API
 {
     public class Startup
@@ -34,6 +36,17 @@ namespace Abilities.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthorization();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000"; // TODO: To configuration
+                    options.ApiName = "abilities";
+                    //options.ApiSecret = "abilitiesSecret"; // TODO: To configuration
+                    options.RequireHttpsMetadata = false;
+                });
+
             services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
 
             // Add repositories
@@ -66,7 +79,8 @@ namespace Abilities.API
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

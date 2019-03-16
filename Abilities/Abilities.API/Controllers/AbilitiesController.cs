@@ -1,5 +1,7 @@
-﻿using Abilities.Application.Abilities.Queries.SearchAbilities;
+﻿using Abilities.Application.Abilities.Commands.CreateAbility;
+using Abilities.Application.Abilities.Queries.SearchAbilities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -18,6 +20,13 @@ namespace Abilities.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchAbilities([FromQuery]SearchAbilitiesQuery request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateAbility([FromBody]CreateSkillCommand request)
         {
             return Ok(await _mediator.Send(request));
         }
