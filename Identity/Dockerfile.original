@@ -11,7 +11,7 @@ WORKDIR "/src/Identity"
 RUN dotnet build "Identity.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "Identity.csproj" -c Release -o /app --no-restore
+RUN dotnet publish "Identity.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

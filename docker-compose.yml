@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  abilities.api:
+    image: ${DOCKER_REGISTRY-}abilitiesapi
+    build:
+      context: .
+      dockerfile: Abilities/Abilities.API/Dockerfile
+    links:
+      - identity
+      - db
+
+  identity:
+    image: ${DOCKER_REGISTRY-}identity
+    build:
+      context: .
+      dockerfile: Identity/Dockerfile
+    links:
+      - db
+
+  db:
+    image: postgres:11.2

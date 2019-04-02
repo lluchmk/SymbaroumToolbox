@@ -22,16 +22,13 @@ namespace Abilities.API
 
             using (var scope = host.Services.CreateScope())
             {
-                try
+                var env = host.Services.GetRequiredService<IHostingEnvironment>();
+                if (env.IsDev())
                 {
                     var context = scope.ServiceProvider.GetService<AbilitiesDbContext>();
-                    // TODO: Migrations
+                    context.Database.Migrate();
 
                     AbilitiesInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Logging
                 }
             }
 

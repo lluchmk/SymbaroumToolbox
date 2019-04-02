@@ -17,17 +17,12 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
-            var seed = args.Any(x => x == "/seed");
-            if (seed) args = args.Except(new[] { "/seed" }).ToArray();
-
             var host = CreateWebHostBuilder(args).Build();
 
-            if (seed)
+            var env = host.Services.GetRequiredService<IHostingEnvironment>();
+            if (env.IsDev())
             {
-                var config = host.Services.GetRequiredService<IConfiguration>();
-                var connectionString = config.GetConnectionString("DefaultConnection");
-                SeedData.EnsureSeedData(connectionString);
-                return;
+                SeedData.EnsureSeedData(host.Services);
             }
 
             host.Run();

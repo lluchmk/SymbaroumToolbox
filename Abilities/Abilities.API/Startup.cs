@@ -21,6 +21,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using IdentityServer4.AccessTokenValidation;
+using Abilities.API.Options;
+using Microsoft.IdentityModel.Logging;
 
 namespace Abilities.API
 {
@@ -36,15 +38,18 @@ namespace Abilities.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddAuthorization();
 
+            var authConfig = Configuration.GetSection("Authentication").Get<Authentication>();
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:5000"; // TODO: To configuration
-                    options.ApiName = "abilities";
+                    options.Authority = authConfig.Authority;
+                    options.ApiName = authConfig.ApiName;
                     //options.ApiSecret = "abilitiesSecret"; // TODO: To configuration
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = authConfig.RequiredHttpsMetadata;
                 });
 
             services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
@@ -56,20 +61,23 @@ namespace Abilities.API
             // TODO: Add pipeline behaviors
             services.AddMediatR(typeof(SearchAbilitiesQueryHandler).GetTypeInfo().Assembly);
 
+            var connectionString = Configuration.GetConnectionString("Abilities");
             // Add DbContext using InMemory provider
             services.AddDbContext<AbilitiesDbContext>(options =>
-                options.UseInMemoryDatabase("SymbaroumAbilities"));
+                options.UseNpgsql(connectionString));
 
             services.
                 AddMvc(/* TODO: Add custom filters */)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             // TODO: Register FluentValidation
+
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDev())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -82,6 +90,14 @@ namespace Abilities.API
             app.UseAuthentication();
             //app.UseHttpsRedirection();
             app.UseMvc();
+        }
+    }
+
+    public static class EnvironmentExtesions
+    {
+        public static bool IsDev(this IHostingEnvironment env)
+        {
+            return env.IsDevelopment() || env.IsEnvironment("DevelopmentDocker");
         }
     }
 }

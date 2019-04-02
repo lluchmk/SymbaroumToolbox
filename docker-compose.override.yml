@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  abilities.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DevelopmentDocker
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "1100:80"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DevelopmentDocker
+    ports:
+      - "1000:80"
+
+  db:
+    environment:
+      - POSTGRES_PASSWORD=pwd
+    ports:
+      - "5432:5432"

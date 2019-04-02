@@ -1,5 +1,6 @@
 ﻿using Abilities.Domain.Entities;
 using Abilities.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,6 @@ namespace Abilities.Persistence.EFInMemory.DataSeeding
 
         public void Seed(AbilitiesDbContext context)
         {
-            context.Database.EnsureCreated();
-
             if (context.Abilities.Any())
             {
                 return; //DB already seeded

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using System;
 
 namespace Identity
@@ -27,9 +28,11 @@ namespace Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("Identity");
+
             services
                 .AddDbContext<ApplicationDbContext>(
-                    options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    options => options.UseNpgsql(connectionString)
                 )
                 .AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -45,6 +48,7 @@ namespace Identity
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
+                    options.IssuerUri = "http://identity";
                 })
                 // TODO: Get everything from database
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
@@ -52,7 +56,7 @@ namespace Identity
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>();
 
-            if (Environment.IsDevelopment())
+            if (Environment.IsDev())
             {
                 builder.AddDeveloperSigningCredential();
             }
@@ -67,7 +71,7 @@ namespace Identity
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsDev())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -80,6 +84,14 @@ namespace Identity
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
+        }
+    }
+
+    public static class EnvironmentExtesions
+    {
+        public static bool IsDev(this IHostingEnvironment env)
+        {
+            return env.IsDevelopment() || env.IsEnvironment("DevelopmentDocker");
         }
     }
 }

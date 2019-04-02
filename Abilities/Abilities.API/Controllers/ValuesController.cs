@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Abilities.API.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Abilities.API.Controllers
 {
@@ -11,6 +14,15 @@ namespace Abilities.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _config;
+
+        public ValuesController(IHttpClientFactory clientFactory, IConfiguration configuration)
+        {
+            _clientFactory = clientFactory;
+            _config = configuration;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
