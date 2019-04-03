@@ -343,3 +343,6 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+#Identity server logs
+**/identityserver4_log.txt
