@@ -1,7 +1,7 @@
 ﻿using Abilities.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Abilities.Persistence.EFInMemory
+namespace Abilities.Persistence
 {
     public class AbilitiesDbContext : DbContext
     {

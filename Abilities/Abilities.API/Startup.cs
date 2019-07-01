@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Abilities.Application.Abilities.Queries.SearchAbilities;
 using Abilities.Application.Infrastructure.Automapper;
 using Abilities.Application.Interfaces.Repositories;
-using Abilities.Persistence.EFInMemory;
-using Abilities.Persistence.EFInMemory.Repositories;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +21,8 @@ using Microsoft.Extensions.Options;
 using IdentityServer4.AccessTokenValidation;
 using Abilities.API.Options;
 using Microsoft.IdentityModel.Logging;
+using Abilities.Persistence.Repositories;
+using Abilities.Persistence;
 
 namespace Abilities.API
 {

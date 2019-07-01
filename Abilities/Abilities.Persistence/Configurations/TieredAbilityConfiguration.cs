@@ -1,4 +1,5 @@
 ﻿using Abilities.Domain.Entities;
+using Abilities.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

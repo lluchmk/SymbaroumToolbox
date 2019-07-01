@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abilities.Persistence.EFInMemory.Repositories
+namespace Abilities.Persistence.Repositories
 {
     public class AbilitiesRepository : IAbilitiesRepository
     {

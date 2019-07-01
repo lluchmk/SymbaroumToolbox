@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Abilities.Persistence.EFInMemory;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Abilities.Persistence.EFInMemory.DataSeeding;
+using Abilities.Persistence.DataSeeding;
+using Abilities.Persistence;
 
 namespace Abilities.API
 {

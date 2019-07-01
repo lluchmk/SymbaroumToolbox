@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Abilities.Persistence.EFInMemory.Configurations
+namespace Abilities.Persistence.Configurations
 {
     public class RitualConfiguration : BaseConfiguration<Ritual>
     {
