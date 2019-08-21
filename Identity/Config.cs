@@ -14,17 +14,15 @@ namespace Identity
             return new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                new IdentityResource()
+                new IdentityResources.Profile()
             };
         }
 
-        public static IEnumerable<ApiResource> GetApis()
+        public static IEnumerable<ApiResource> GetResources()
         {
             return new ApiResource[]
             {
-                new ApiResource("api1", "My API #1"),
-                new ApiResource("abilities", "Abilites API")
+                new ApiResource("abilitiesapi", "Abilites API"),
             };
         }
 
@@ -102,10 +100,9 @@ namespace Identity
                     AllowedScopes =  {
                         IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                        "abilities"
+                        "abilitiesapi"
                     },
                     ClientSecrets = { new Secret("secret".Sha256()) }
-
                 }
             };
         }

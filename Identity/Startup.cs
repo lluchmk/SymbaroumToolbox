@@ -17,18 +17,18 @@ namespace Identity
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public IHostingEnvironment Environment { get; }
+        public readonly IConfiguration _config;
+        public readonly IHostingEnvironment _env;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
-            Configuration = configuration;
-            Environment = environment;
+            _config = configuration;
+            _env = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("Identity");
+            var connectionString = _config.GetConnectionString("Identity");
 
             services
                 .AddDbContext<ApplicationDbContext>(
@@ -48,15 +48,15 @@ namespace Identity
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
-                    options.IssuerUri = "http://identity";
+                    //options.IssuerUri = "http://identity";
                 })
                 // TODO: Get everything from database
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApis())
+                .AddInMemoryApiResources(Config.GetResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>();
 
-            if (Environment.IsDev())
+            if (_env.IsDev())
             {
                 builder.AddDeveloperSigningCredential();
             }
@@ -71,7 +71,7 @@ namespace Identity
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDev())
+            if (_env.IsDev())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();

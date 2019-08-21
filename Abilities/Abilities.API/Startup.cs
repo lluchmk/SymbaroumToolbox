@@ -28,12 +28,12 @@ namespace Abilities.API
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _config = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -42,13 +42,13 @@ namespace Abilities.API
 
             services.AddAuthorization();
 
-            var authConfig = Configuration.GetSection("Authentication").Get<Authentication>();
+            var authConfig = _config.GetSection("Authentication").Get<Authentication>();
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = authConfig.Authority;
                     options.ApiName = authConfig.ApiName;
-                    //options.ApiSecret = "abilitiesSecret"; // TODO: To configuration
+                    options.ApiSecret = authConfig.ApiSecret;
                     options.RequireHttpsMetadata = authConfig.RequiredHttpsMetadata;
                 });
 
@@ -61,8 +61,8 @@ namespace Abilities.API
             // TODO: Add pipeline behaviors
             services.AddMediatR(typeof(SearchAbilitiesQueryHandler).GetTypeInfo().Assembly);
 
-            var connectionString = Configuration.GetConnectionString("Abilities");
-            // Add DbContext using InMemory provider
+            var connectionString = _config.GetConnectionString("Abilities");
+            // Add DbContext using Postgress provider
             services.AddDbContext<AbilitiesDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
