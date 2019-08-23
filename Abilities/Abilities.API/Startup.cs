@@ -88,7 +88,7 @@ namespace Abilities.API
             }
 
             app.UseAuthentication();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
