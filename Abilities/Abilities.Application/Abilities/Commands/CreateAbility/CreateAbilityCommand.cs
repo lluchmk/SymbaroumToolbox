@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Abilities.Application.Abilities.Commands.CreateAbility
 {
-    public class CreateSkillCommand : IRequest<int>
+    public class CreateAbilityCommand : IRequest<int>
     {
-        public SkillType Type { get; set; }
+        public AbilityType Type { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

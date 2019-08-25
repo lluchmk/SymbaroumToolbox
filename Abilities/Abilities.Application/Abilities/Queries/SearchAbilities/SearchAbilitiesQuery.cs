@@ -11,16 +11,16 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
     {
         public SearchAbilitiesQuery()
         {
-            Types = new List<SkillType>();
+            Types = new List<AbilityType>();
         }
 
         [FromQuery]
         public string Name { get; set; }
         [FromQuery]
-        public IEnumerable<SkillType> Types { get; set; }
+        public IEnumerable<AbilityType> Types { get; set; }
 
-        public bool SearchAbilities() => !Types.Any() || Types.Any(t => t == SkillType.Ability);
-        public bool SearchMysticalPowers() => !Types.Any() || Types.Any(t => t == SkillType.MysticalPower);
-        public bool SearchRituals() => !Types.Any() || Types.Any(t => t == SkillType.Ritual);
+        public bool SearchAbilities() => !Types.Any() || Types.Any(t => t == AbilityType.Ability);
+        public bool SearchMysticalPowers() => !Types.Any() || Types.Any(t => t == AbilityType.MysticalPower);
+        public bool SearchRituals() => !Types.Any() || Types.Any(t => t == AbilityType.Ritual);
     }
 }

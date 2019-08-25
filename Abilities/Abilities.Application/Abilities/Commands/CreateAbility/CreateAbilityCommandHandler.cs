@@ -9,36 +9,36 @@ using System.Threading.Tasks;
 
 namespace Abilities.Application.Abilities.Commands.CreateAbility
 {
-    class CreateSkillCommandHandler : IRequestHandler<CreateSkillCommand, int>
+    class CreateAbilityCommandHandler : IRequestHandler<CreateAbilityCommand, int>
     {
         private readonly IAbilitiesRepository _repository;
         private readonly IMapper _mapper;
 
-        public CreateSkillCommandHandler(IAbilitiesRepository repository, IMapper mapper)
+        public CreateAbilityCommandHandler(IAbilitiesRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateSkillCommand command, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateAbilityCommand command, CancellationToken cancellationToken)
         {
             int createdId;
             switch (command.Type)
             {
-                case SkillType.Ability:
+                case AbilityType.Ability:
                     var ability = _mapper.Map<Ability>(command);
                     createdId = await _repository.Create(ability, cancellationToken);
                     break;
-                case SkillType.MysticalPower:
+                case AbilityType.MysticalPower:
                     var mysticalPower = _mapper.Map<MysticalPower>(command);
                     createdId = await _repository.Create(mysticalPower, cancellationToken);
                     break;
-                case SkillType.Ritual:
+                case AbilityType.Ritual:
                     var ritual = _mapper.Map<Ritual>(command);
                     createdId = await _repository.Create(ritual, cancellationToken);
                     break;
                 default:
-                    throw new NotImplementedException("No handler for unrecognized skill type"); // TODO: Better exception
+                    throw new NotImplementedException("No handler for unrecognized ability type"); // TODO: Better exception
             }
             return createdId;
         }

@@ -26,24 +26,24 @@ namespace Abilities.Application.Infrastructure.Automapper
 
             CreateMap<Ritual, RitualDto>();
 
-            CreateMap<CreateSkillCommand, BaseAbility>()
+            CreateMap<CreateAbilityCommand, BaseAbility>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
                 ;
 
-            CreateMap<CreateSkillCommand, Ability>()
-                .IncludeBase<CreateSkillCommand, BaseAbility>()
+            CreateMap<CreateAbilityCommand, Ability>()
+                .IncludeBase<CreateAbilityCommand, BaseAbility>()
                 .ForMember(d => d.Novice, opt => opt.MapFrom(s => new AbilityTier(s.NoviceType, s.NoviceDescription)))
                 .ForMember(d => d.Adept, opt => opt.MapFrom(s => new AbilityTier(s.AdeptType, s.AdeptDescription)))
                 .ForMember(d => d.Master, opt => opt.MapFrom(s => new AbilityTier(s.MasterType, s.MasterDescription)))
                 ;
 
-            CreateMap<CreateSkillCommand, Ritual>()
+            CreateMap<CreateAbilityCommand, Ritual>()
                 .ForMember(d => d.Tradition, opt => opt.MapFrom(s => s.Tradition))
                 ;
 
-            CreateMap<CreateSkillCommand, MysticalPower>()
-                .IncludeBase<CreateSkillCommand, Ability>()
+            CreateMap<CreateAbilityCommand, MysticalPower>()
+                .IncludeBase<CreateAbilityCommand, Ability>()
                 .ForMember(d => d.Material, opt => opt.MapFrom(s => s.Material))
                 ;
         }

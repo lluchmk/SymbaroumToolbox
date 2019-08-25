@@ -3,7 +3,6 @@ using Abilities.Application.Abilities.Queries.SearchAbilities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Abilities.API.Controllers
@@ -27,7 +26,7 @@ namespace Abilities.API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateAbility([FromBody]CreateSkillCommand request)
+        public async Task<IActionResult> CreateAbility([FromBody]CreateAbilityCommand request)
         {
             return Ok(await _mediator.Send(request));
         }

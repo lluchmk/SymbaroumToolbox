@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Abilities.Persistence.Configurations
 {
-    public abstract class BaseConfiguration<TEntity> : IEntityTypeConfiguration<BaseAbility>
+    public abstract class BaseConfiguration : IEntityTypeConfiguration<BaseAbility>
     {
         public void Configure(EntityTypeBuilder<BaseAbility> builder)
         {

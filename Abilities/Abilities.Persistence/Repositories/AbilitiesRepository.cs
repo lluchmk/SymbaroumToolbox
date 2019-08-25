@@ -18,12 +18,12 @@ namespace Abilities.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
-            where TSkill : BaseAbility
+        public async Task<IEnumerable<TAbility>> Search<TAbility>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
+            where TAbility : BaseAbility
         {
-            var skills = _context.Abilities.Where(a => a.GetType() == typeof(TSkill));
+            var abilities = _context.Abilities.Where(a => a.GetType() == typeof(TAbility));
 
-            var response = skills.OfType<TSkill>()
+            var response = abilities.OfType<TAbility>()
                 .Where(s => s.UserId == null || s.UserId == userId);
 
             if (!string.IsNullOrWhiteSpace(query.Name))
@@ -34,8 +34,8 @@ namespace Abilities.Persistence.Repositories
             return await response.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> Create<TSkill>(TSkill baseAbility, CancellationToken cancellationToken)
-            where TSkill : BaseAbility
+        public async Task<int> Create<TAbility>(TAbility baseAbility, CancellationToken cancellationToken)
+            where TAbility : BaseAbility
         {
             await _context.Abilities.AddAsync(baseAbility, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

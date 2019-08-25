@@ -1,6 +1,6 @@
 ﻿namespace Abilities.Application.Abilities.Enums
 {
-    public enum SkillType
+    public enum AbilityType
     {
         Ability,
         MysticalPower,
