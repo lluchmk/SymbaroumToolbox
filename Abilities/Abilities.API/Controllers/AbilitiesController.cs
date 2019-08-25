@@ -3,6 +3,7 @@ using Abilities.Application.Abilities.Queries.SearchAbilities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Abilities.API.Controllers
@@ -30,5 +31,9 @@ namespace Abilities.API.Controllers
         {
             return Ok(await _mediator.Send(request));
         }
+
+        // TODO: Update PUT
+
+        // TODO: Delete
     }
 }

@@ -1,4 +1,5 @@
-﻿using Abilities.Application.Interfaces.Repositories;
+﻿using Abilities.Application.Abilities.Enums;
+using Abilities.Application.Interfaces.Repositories;
 using Abilities.Domain.Entities;
 using AutoMapper;
 using MediatR;
@@ -26,20 +27,20 @@ namespace Abilities.Application.Abilities.Commands.CreateAbility
             int createdId;
             switch (command.Type)
             {
-                case Enums.SkillType.Ability:
+                case SkillType.Ability:
                     var ability = _mapper.Map<Ability>(command);
                     createdId = await _repository.CreateAbility(ability, cancellationToken);
                     break;
-                case Enums.SkillType.MysticalPower:
+                case SkillType.MysticalPower:
                     var mysticalPower = _mapper.Map<MysticalPower>(command);
                     createdId = await _repository.CreateMysticalPower(mysticalPower, cancellationToken);
                     break;
-                case Enums.SkillType.Ritual:
+                case SkillType.Ritual:
                     var ritual = _mapper.Map<Ritual>(command);
                     createdId = await _repository.CreateRitual(ritual, cancellationToken);
                     break;
                 default:
-                    throw new NotImplementedException("No handler for unrecognized skill type");
+                    throw new NotImplementedException("No handler for unrecognized skill type"); // TODO: Better exception
             }
             return createdId;
         }

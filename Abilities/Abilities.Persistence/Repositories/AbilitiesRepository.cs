@@ -18,21 +18,26 @@ namespace Abilities.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Ability>> SearchAbilities(SearchAbilitiesQuery query, CancellationToken cancellationToken) =>
-            await Search(query, _context.Abilities, cancellationToken);
+        public async Task<IEnumerable<Ability>> SearchAbilities(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
+            await Search(query, userId, _context.Abilities, cancellationToken);
 
-        public async Task<IEnumerable<MysticalPower>> SearchMysticalPowers(SearchAbilitiesQuery query, CancellationToken cancellationToken) =>
-            await Search(query, _context.MysticalPowers, cancellationToken);
+        public async Task<IEnumerable<MysticalPower>> SearchMysticalPowers(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
+            await Search(query, userId, _context.MysticalPowers, cancellationToken);
 
-        public async Task<IEnumerable<Ritual>> SearchRituals(SearchAbilitiesQuery query, CancellationToken cancellationToken) =>
-            await Search(query, _context.Rituals, cancellationToken);
+        public async Task<IEnumerable<Ritual>> SearchRituals(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
+            await Search(query, userId, _context.Rituals, cancellationToken);
 
-        private async Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, DbSet<TSkill> dbSet, CancellationToken cancellationToken)
+        private async Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, string userId, DbSet<TSkill> dbSet, CancellationToken cancellationToken)
             where TSkill : BaseAbility
         {
-            return string.IsNullOrWhiteSpace(query.Name) ?
-                await dbSet.ToListAsync(cancellationToken) :
-                await dbSet.Where(s => s.Name.Contains(query.Name)).ToListAsync(cancellationToken);
+            var response = dbSet.Where(s => s.UserId == null || s.UserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                response = response.Where(s => s.Name.Contains(query.Name));
+            }
+
+            return await response.ToListAsync(cancellationToken);
         }
 
         public async Task<int> CreateAbility(Ability ability, CancellationToken cancellationToken) =>

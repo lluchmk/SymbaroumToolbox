@@ -12,6 +12,7 @@ namespace Abilities.Persistence.Configurations
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
+            builder.Property(a => a.UserId).HasColumnName("UserId");
             builder.Property(a => a.Name).HasColumnName("Name");
             builder.Property(a => a.Description).HasColumnName("Description");
         }
