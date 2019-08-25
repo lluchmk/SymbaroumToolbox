@@ -19,10 +19,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using IdentityServer4.AccessTokenValidation;
-using Abilities.API.Options;
 using Microsoft.IdentityModel.Logging;
 using Abilities.Persistence.Repositories;
 using Abilities.Persistence;
+using Abilities.Application.Interfaces.Services;
+using Abilities.Application.Users;
+using Abilities.Application.Options;
 
 namespace Abilities.API
 {
@@ -42,7 +44,8 @@ namespace Abilities.API
 
             services.AddAuthorization();
 
-            var authConfig = _config.GetSection("Authentication").Get<Authentication>();
+            var authConfig = _config.GetSection("Authentication")
+                .Get<AuthOptions>();
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
@@ -54,8 +57,13 @@ namespace Abilities.API
 
             services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
 
+            services.AddHttpContextAccessor();
+
+            // Add services
+            services.AddScoped<IUsersService, UsersService>();
+
             // Add repositories
-            services.AddTransient<IAbilitiesRepository, AbilitiesRepository>();
+            services.AddScoped<IAbilitiesRepository, AbilitiesRepository>();
 
             // Add MediatR
             // TODO: Add pipeline behaviors

@@ -1,6 +1,6 @@
-﻿namespace Abilities.API.Options
+﻿namespace Abilities.Application.Options
 {
-    public class Authentication
+    public class AuthOptions
     {
         public string Authority { get; set; }
         public string ApiName { get; set; }
