@@ -31,15 +31,11 @@ namespace Abilities.Application.Infrastructure.Automapper
                 .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
                 ;
 
-            CreateMap<CreateSkillCommand, TieredAbility>()
+            CreateMap<CreateSkillCommand, Ability>()
                 .IncludeBase<CreateSkillCommand, BaseAbility>()
                 .ForMember(d => d.Novice, opt => opt.MapFrom(s => new AbilityTier(s.NoviceType, s.NoviceDescription)))
                 .ForMember(d => d.Adept, opt => opt.MapFrom(s => new AbilityTier(s.AdeptType, s.AdeptDescription)))
                 .ForMember(d => d.Master, opt => opt.MapFrom(s => new AbilityTier(s.MasterType, s.MasterDescription)))
-                ;
-
-            CreateMap<CreateSkillCommand, Ability>()
-                .IncludeBase<CreateSkillCommand, TieredAbility>()
                 ;
 
             CreateMap<CreateSkillCommand, Ritual>()
@@ -47,7 +43,7 @@ namespace Abilities.Application.Infrastructure.Automapper
                 ;
 
             CreateMap<CreateSkillCommand, MysticalPower>()
-                .IncludeBase<CreateSkillCommand, TieredAbility>()
+                .IncludeBase<CreateSkillCommand, Ability>()
                 .ForMember(d => d.Material, opt => opt.MapFrom(s => s.Material))
                 ;
         }

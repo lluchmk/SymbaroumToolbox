@@ -126,7 +126,7 @@ namespace Abilities.Persistence.DataSeeding
                 },
             };
 
-            context.MysticalPowers.AddRange(mysticalPowers);
+            context.Abilities.AddRange(mysticalPowers);
             context.SaveChanges();
         }
 
@@ -142,7 +142,7 @@ namespace Abilities.Persistence.DataSeeding
                 },
             };
 
-            context.Rituals.AddRange(rituals);
+            context.Abilities.AddRange(rituals);
             context.SaveChanges();
         }
     }

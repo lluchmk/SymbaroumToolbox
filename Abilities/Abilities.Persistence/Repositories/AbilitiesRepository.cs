@@ -18,19 +18,13 @@ namespace Abilities.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Ability>> SearchAbilities(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
-            await Search(query, userId, _context.Abilities, cancellationToken);
-
-        public async Task<IEnumerable<MysticalPower>> SearchMysticalPowers(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
-            await Search(query, userId, _context.MysticalPowers, cancellationToken);
-
-        public async Task<IEnumerable<Ritual>> SearchRituals(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken) =>
-            await Search(query, userId, _context.Rituals, cancellationToken);
-
-        private async Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, string userId, DbSet<TSkill> dbSet, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
             where TSkill : BaseAbility
         {
-            var response = dbSet.Where(s => s.UserId == null || s.UserId == userId);
+            var skills = _context.Abilities.Where(a => a.GetType() == typeof(TSkill));
+
+            var response = skills.OfType<TSkill>()
+                .Where(s => s.UserId == null || s.UserId == userId);
 
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
@@ -41,18 +35,18 @@ namespace Abilities.Persistence.Repositories
         }
 
         public async Task<int> CreateAbility(Ability ability, CancellationToken cancellationToken) =>
-            await Create(ability, _context.Abilities, cancellationToken);
+            await Create(ability, cancellationToken);
 
         public async Task<int> CreateMysticalPower(MysticalPower mysticalPower, CancellationToken cancellationToken) =>
-            await Create(mysticalPower, _context.MysticalPowers, cancellationToken);
+            await Create(mysticalPower, cancellationToken);
 
         public async Task<int> CreateRitual(Ritual ritual, CancellationToken cancellationToken) =>
-            await Create(ritual, _context.Rituals, cancellationToken);
+            await Create(ritual, cancellationToken);
 
-        public async Task<int> Create<TSkill>(TSkill baseAbility, DbSet<TSkill> dbSet, CancellationToken cancellationToken)
+        public async Task<int> Create<TSkill>(TSkill baseAbility, CancellationToken cancellationToken)
             where TSkill : BaseAbility
         {
-            await dbSet.AddAsync(baseAbility, cancellationToken);
+            await _context.Abilities.AddAsync(baseAbility, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             var createdId = baseAbility.Id;

@@ -3,13 +3,9 @@ using Abilities.Application.Interfaces.Repositories;
 using Abilities.Application.Interfaces.Services;
 using Abilities.Domain.Entities;
 using AutoMapper;
-using IdentityModel.Client;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,19 +36,19 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
             IEnumerable<Ability> abilities = Enumerable.Empty<Ability>();
             if (request.SearchAbilities())
             {
-                abilities = await _repository.SearchAbilities(request, userId, cancellationToken);
+                abilities = await _repository.Search<Ability>(request, userId, cancellationToken);
             }
 
             IEnumerable<MysticalPower> mysticalPowers = Enumerable.Empty<MysticalPower>();
             if (request.SearchMysticalPowers())
             {
-                mysticalPowers = await _repository.SearchMysticalPowers(request, userId, cancellationToken);
+                mysticalPowers = await _repository.Search<MysticalPower>(request, userId, cancellationToken);
             }
 
             IEnumerable<Ritual> rituals = Enumerable.Empty<Ritual>();
             if (request.SearchRituals())
             {
-                rituals = await _repository.SearchRituals(request, userId, cancellationToken);
+                rituals = await _repository.Search<Ritual>(request, userId, cancellationToken);
             }
 
             var viewModel = new AbilitiesListViewModel

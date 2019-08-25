@@ -10,11 +10,7 @@ namespace Abilities.Persistence
         {
         }
 
-        public DbSet<Ability> Abilities { get; set; }
-
-        public DbSet<MysticalPower> MysticalPowers { get; set; }
-
-        public DbSet<Ritual> Rituals { get; set; }
+        public DbSet<BaseAbility> Abilities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

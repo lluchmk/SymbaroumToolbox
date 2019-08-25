@@ -1,15 +1,13 @@
 ﻿using Abilities.Domain.Entities;
-using Abilities.Persistence.EFInMemory.Configurations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Abilities.Persistence.Configurations
 {
-    public class MysticalPowerConfiguration : TieredAbilityConfiguration<MysticalPower>
+    public class MysticalPowerConfiguration : IEntityTypeConfiguration<MysticalPower>
     {
-        public override void Configure(EntityTypeBuilder<MysticalPower> builder)
+        public void Configure(EntityTypeBuilder<MysticalPower> builder)
         {
-            base.Configure(builder);
-
             builder.Property(m => m.Material);
         }
     }

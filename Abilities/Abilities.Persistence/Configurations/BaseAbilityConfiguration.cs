@@ -4,10 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Abilities.Persistence.Configurations
 {
-    public abstract class BaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-        where TEntity : BaseAbility
+    public abstract class BaseConfiguration<TEntity> : IEntityTypeConfiguration<BaseAbility>
     {
-        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+        public void Configure(EntityTypeBuilder<BaseAbility> builder)
         {
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id).ValueGeneratedOnAdd();

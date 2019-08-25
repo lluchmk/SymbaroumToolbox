@@ -1,6 +1,6 @@
 ﻿namespace Abilities.Domain.Entities
 {
-    public class MysticalPower : TieredAbility
+    public class MysticalPower : Ability
     {
         public string Material { get; set; }
     }
