@@ -4,8 +4,6 @@ using Abilities.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,15 +27,15 @@ namespace Abilities.Application.Abilities.Commands.CreateAbility
             {
                 case SkillType.Ability:
                     var ability = _mapper.Map<Ability>(command);
-                    createdId = await _repository.CreateAbility(ability, cancellationToken);
+                    createdId = await _repository.Create(ability, cancellationToken);
                     break;
                 case SkillType.MysticalPower:
                     var mysticalPower = _mapper.Map<MysticalPower>(command);
-                    createdId = await _repository.CreateMysticalPower(mysticalPower, cancellationToken);
+                    createdId = await _repository.Create(mysticalPower, cancellationToken);
                     break;
                 case SkillType.Ritual:
                     var ritual = _mapper.Map<Ritual>(command);
-                    createdId = await _repository.CreateRitual(ritual, cancellationToken);
+                    createdId = await _repository.Create(ritual, cancellationToken);
                     break;
                 default:
                     throw new NotImplementedException("No handler for unrecognized skill type"); // TODO: Better exception

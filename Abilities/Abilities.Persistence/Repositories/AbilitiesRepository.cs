@@ -34,15 +34,6 @@ namespace Abilities.Persistence.Repositories
             return await response.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> CreateAbility(Ability ability, CancellationToken cancellationToken) =>
-            await Create(ability, cancellationToken);
-
-        public async Task<int> CreateMysticalPower(MysticalPower mysticalPower, CancellationToken cancellationToken) =>
-            await Create(mysticalPower, cancellationToken);
-
-        public async Task<int> CreateRitual(Ritual ritual, CancellationToken cancellationToken) =>
-            await Create(ritual, cancellationToken);
-
         public async Task<int> Create<TSkill>(TSkill baseAbility, CancellationToken cancellationToken)
             where TSkill : BaseAbility
         {

@@ -11,10 +11,7 @@ namespace Abilities.Application.Interfaces.Repositories
         Task<IEnumerable<TSkill>> Search<TSkill>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
             where TSkill : BaseAbility;
 
-        Task<int> CreateAbility(Ability ability, CancellationToken cancellationToken);
-
-        Task<int> CreateMysticalPower(MysticalPower mysticalPower, CancellationToken cancellationToken);
-
-        Task<int> CreateRitual(Ritual ritual, CancellationToken cancellationToken);
+        Task<int> Create<TSkill>(TSkill ability, CancellationToken cancellationToken)
+            where TSkill : BaseAbility;
     }
 }
