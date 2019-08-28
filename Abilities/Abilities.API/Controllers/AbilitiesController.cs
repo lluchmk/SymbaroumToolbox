@@ -1,4 +1,5 @@
 ﻿using Abilities.Application.Abilities.Commands.CreateAbility;
+using Abilities.Application.Abilities.Commands.DeleteAbility;
 using Abilities.Application.Abilities.Commands.UpdateAbility;
 using Abilities.Application.Abilities.Queries.SearchAbilities;
 using MediatR;
@@ -45,7 +46,15 @@ namespace Abilities.API.Controllers
             return Ok(await _mediator.Send(request));
         }
 
-
-        // TODO: Delete
+        [Authorize]
+        [HttpDelete("{abilityId}")]
+        public async Task<IActionResult> DeleteAbility([FromRoute] int abilityId)
+        {
+            var request = new DeleteAbilityCommand
+            {
+                AbilityId = abilityId
+            };
+            return Ok(await _mediator.Send(request));
+        }
     }
 }

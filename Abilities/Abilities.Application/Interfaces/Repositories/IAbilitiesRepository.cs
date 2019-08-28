@@ -17,5 +17,7 @@ namespace Abilities.Application.Interfaces.Repositories
         Task<BaseAbility> GetById(int abilityId, CancellationToken cancellationToken);
 
         Task Update(BaseAbility ability, CancellationToken cancellationToken);
+
+        Task Delete(BaseAbility ability, CancellationToken cancellationToken);
     }
 }

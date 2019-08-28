@@ -57,5 +57,11 @@ namespace Abilities.Persistence.Repositories
             _context.Abilities.Update(ability);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task Delete(BaseAbility ability, CancellationToken cancellationToken)
+        {
+            _context.Abilities.Remove(ability);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
