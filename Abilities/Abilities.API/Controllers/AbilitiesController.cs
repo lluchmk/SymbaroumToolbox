@@ -1,4 +1,5 @@
 ﻿using Abilities.Application.Abilities.Commands.CreateAbility;
+using Abilities.Application.Abilities.Commands.UpdateAbility;
 using Abilities.Application.Abilities.Queries.SearchAbilities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,19 @@ namespace Abilities.API.Controllers
             return Ok(await _mediator.Send(request));
         }
 
-        // TODO: Update PUT
+        [Authorize]
+        [HttpPut("{abilityId}")]
+        public async Task<IActionResult> UpdateAbility([FromRoute] int abilityId, [FromBody] UpdateAbilityCommandBody requestBody)
+        {
+            var request = new UpdateAbilityCommand
+            {
+                AbilityId = abilityId,
+                Body = requestBody
+            };
+
+            return Ok(await _mediator.Send(request));
+        }
+
 
         // TODO: Delete
     }

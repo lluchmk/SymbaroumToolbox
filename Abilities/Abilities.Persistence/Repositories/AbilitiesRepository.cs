@@ -43,5 +43,19 @@ namespace Abilities.Persistence.Repositories
             var createdId = baseAbility.Id;
             return createdId;
         }
+
+        public async Task<BaseAbility> GetById(int abilityId, CancellationToken cancellationToken)
+        {
+            var ability = await _context.Abilities.Where(a => a.Id == abilityId)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            return ability;
+        }
+
+        public async Task Update(BaseAbility ability, CancellationToken cancellationToken)
+        {
+            _context.Abilities.Update(ability);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

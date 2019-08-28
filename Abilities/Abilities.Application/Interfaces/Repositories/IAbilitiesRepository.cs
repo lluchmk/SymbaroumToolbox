@@ -13,5 +13,9 @@ namespace Abilities.Application.Interfaces.Repositories
 
         Task<int> Create<TAbility>(TAbility ability, CancellationToken cancellationToken)
             where TAbility : BaseAbility;
+
+        Task<BaseAbility> GetById(int abilityId, CancellationToken cancellationToken);
+
+        Task Update(BaseAbility ability, CancellationToken cancellationToken);
     }
 }
