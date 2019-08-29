@@ -38,7 +38,7 @@ namespace Abilities.Application.Abilities.Commands.CreateAbility
                     ability = _mapper.Map<Ritual>(command);
                     break;
                 default:
-                    throw new NotImplementedException("No handler for unrecognized ability type"); // TODO: Better exception
+                    throw new NotImplementedException("No handler for unrecognized ability type"); // TODO: Better exception? Should't happen with proper validation
             }
 
             var userId = _usersService.GetUserId();

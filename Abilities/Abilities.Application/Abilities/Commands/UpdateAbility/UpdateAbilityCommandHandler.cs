@@ -1,4 +1,5 @@
 ﻿using Abilities.Application.Abilities.Enums;
+using Abilities.Application.Exceptions;
 using Abilities.Application.Interfaces.Repositories;
 using Abilities.Application.Interfaces.Services;
 using Abilities.Domain.Entities;
@@ -30,7 +31,7 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
             var ability = await _repository.GetById(request.AbilityId, cancellationToken);
             if (ability is null)
             {
-                throw new Exception("Invalid ability id."); // TODO: Review exception type
+                throw new InvalidAbilityIdException();
             }
             var userId = _usersService.GetUserId();
 
@@ -62,10 +63,6 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
             else if (abilityType == typeof(Ritual))
             {
                 MapRitual(requestBody, ability as Ritual);
-            }
-            else
-            {
-                throw new Exception(); // TODO: Better exception
             }
         }
 
