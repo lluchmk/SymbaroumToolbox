@@ -23,11 +23,6 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
 
         public async Task<Unit> Handle(UpdateAbilityCommand request, CancellationToken cancellationToken)
         {
-            if (!_usersService.IsUserAuthenticated())
-            {
-                throw new UnauthorizedAccessException("The use must be logged in to update an ability.");
-            }
-
             var ability = await _repository.GetById(request.AbilityId, cancellationToken);
             if (ability is null)
             {
