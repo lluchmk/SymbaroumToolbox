@@ -25,6 +25,8 @@ using Abilities.Persistence;
 using Abilities.Application.Interfaces.Services;
 using Abilities.Application.Users;
 using Abilities.Application.Options;
+using Abilities.Application.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Abilities.API
 {
@@ -42,7 +44,16 @@ namespace Abilities.API
         {
             IdentityModelEventSource.ShowPII = true;
 
-            services.AddAuthorization();
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("MustOwnAbility", policyBuilder =>
+                {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.AddRequirements(new MustOwnAbilityRequirement());
+                });
+            });
+
+            services.AddScoped<IAuthorizationHandler, MustOwnAbilityHandler>();
 
             var authConfig = _config.GetSection("Authentication")
                 .Get<AuthOptions>();

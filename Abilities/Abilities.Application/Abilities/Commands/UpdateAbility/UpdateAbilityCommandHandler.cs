@@ -28,12 +28,6 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
             {
                 throw new InvalidAbilityIdException();
             }
-            var userId = _usersService.GetUserId();
-
-            if (ability.UserId != userId)
-            {
-                throw new UnauthorizedAccessException("The user cannot edit this ability.");
-            }
 
             MapUpdateRequest(request.Body, ability);
 

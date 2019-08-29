@@ -63,5 +63,10 @@ namespace Abilities.Persistence.Repositories
             _context.Abilities.Remove(ability);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<bool> IsAbilityOwner(int abilityId, string userId)
+        {
+            return await _context.Abilities.AnyAsync(a => a.Id == abilityId && a.UserId == userId);
+        }
     }
 }

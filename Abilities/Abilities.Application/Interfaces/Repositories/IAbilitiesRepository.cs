@@ -19,5 +19,7 @@ namespace Abilities.Application.Interfaces.Repositories
         Task Update(BaseAbility ability, CancellationToken cancellationToken);
 
         Task Delete(BaseAbility ability, CancellationToken cancellationToken);
+
+        Task<bool> IsAbilityOwner(int abilityId, string userId);
     }
 }

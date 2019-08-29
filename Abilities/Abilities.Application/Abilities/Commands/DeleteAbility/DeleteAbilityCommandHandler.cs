@@ -31,12 +31,6 @@ namespace Abilities.Application.Abilities.Commands.DeleteAbility
             {
                 throw new InvalidAbilityIdException();
             }
-            var userId = _usersService.GetUserId();
-
-            if (ability.UserId != userId)
-            {
-                throw new UnauthorizedAccessException("The user cannot edit this ability.");
-            }
 
             await _repository.Delete(ability, cancellationToken);
 

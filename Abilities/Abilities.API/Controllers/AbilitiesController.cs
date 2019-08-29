@@ -33,7 +33,7 @@ namespace Abilities.API.Controllers
             return Ok(await _mediator.Send(request));
         }
 
-        [Authorize]
+        [Authorize(Policy = "MustOwnAbility")]
         [HttpPut("{abilityId}")]
         public async Task<IActionResult> UpdateAbility([FromRoute] int abilityId, [FromBody] UpdateAbilityCommandBody requestBody)
         {
@@ -46,7 +46,7 @@ namespace Abilities.API.Controllers
             return Ok(await _mediator.Send(request));
         }
 
-        [Authorize]
+        [Authorize(Policy = "MustOwnAbility")]
         [HttpDelete("{abilityId}")]
         public async Task<IActionResult> DeleteAbility([FromRoute] int abilityId)
         {
