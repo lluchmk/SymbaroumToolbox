@@ -1,7 +1,5 @@
-﻿using Abilities.Application.Abilities.Enums;
-using Abilities.Application.Exceptions;
+﻿using Abilities.Application.Exceptions;
 using Abilities.Application.Interfaces.Repositories;
-using Abilities.Application.Interfaces.Services;
 using Abilities.Domain.Entities;
 using MediatR;
 using System;
@@ -13,12 +11,10 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
     public class UpdateAbilityCommandHandler : IRequestHandler<UpdateAbilityCommand>
     {
         private readonly IAbilitiesRepository _repository;
-        private readonly IUsersService _usersService;
 
-        public UpdateAbilityCommandHandler(IAbilitiesRepository repository, IUsersService usersService)
+        public UpdateAbilityCommandHandler(IAbilitiesRepository repository)
         {
             _repository = repository;
-            _usersService = usersService;
         }
 
         public async Task<Unit> Handle(UpdateAbilityCommand request, CancellationToken cancellationToken)
@@ -56,7 +52,7 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
         }
 
         public void MapBaseProperties<TAbility>(UpdateAbilityCommandBody requestBody, TAbility baseAbility)
-            where TAbility : BaseAbility    
+            where TAbility : BaseAbility
         {
             baseAbility.Name = requestBody.Name ?? baseAbility.Name;
             baseAbility.Description = requestBody.Description ?? baseAbility.Description;
