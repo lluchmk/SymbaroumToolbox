@@ -10,6 +10,11 @@ namespace Abilities.Application.Authorization
     {
         private readonly IAbilitiesRepository _repository;
 
+        public MustOwnAbilityHandler(IAbilitiesRepository repository)
+        {
+            _repository = repository;
+        }
+
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MustOwnAbilityRequirement requirement)
         {
             var filterContext = context.Resource as AuthorizationFilterContext;
