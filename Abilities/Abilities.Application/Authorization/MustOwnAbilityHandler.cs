@@ -24,7 +24,7 @@ namespace Abilities.Application.Authorization
                 return;
             }
 
-            var abilityId = (int)filterContext.RouteData.Values["abilityId"];
+            var abilityId = int.Parse(filterContext.RouteData.Values["abilityId"].ToString());
             var abilityOwnerId = context.User.Claims.First(c => c.Type == "sub").Value;
 
             if (!(await _repository.IsAbilityOwner(abilityId, abilityOwnerId)))
