@@ -1,4 +1,5 @@
-﻿using Abilities.Domain.Enums;
+﻿using Abilities.Domain.Entities;
+using Abilities.Domain.Enums;
 
 namespace Abilities.Application.Abilities.Queries.Dtos
 {
@@ -12,5 +13,18 @@ namespace Abilities.Application.Abilities.Queries.Dtos
 
         public ActionType MasterType { get; set; }
         public string MasterDescription { get; set; }
+
+        public AbilityDto(Ability ability)
+            : base(ability)
+        {
+            NoviceType = ability.Novice.Type;
+            NoviceDescription = ability.Novice.Description;
+
+            AdeptType = ability.Adept.Type;
+            AdeptDescription = ability.Adept.Description;
+
+            MasterType = ability.Master.Type;
+            MasterDescription = ability.Master.Description;
+        }
     }
 }

@@ -19,26 +19,12 @@ namespace Abilities.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TAbility>> Search<TAbility>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
-            where TAbility : BaseAbility
-        {
-            var abilities = _context.Abilities.Where(a => a.GetType() == typeof(TAbility));
-
-            var response = abilities.OfType<TAbility>()
-                .Where(s => s.UserId == null || s.UserId == userId);
-
-            if (!string.IsNullOrWhiteSpace(query.Name))
-            {
-                response = response.Where(s => s.Name.Contains(query.Name));
-            }
-
-            return await response.ToListAsync(cancellationToken);
-        }
-
         public async Task<IEnumerable<BaseAbility>> Search(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
         {
             var response = _context.Abilities
                 .Where(s => s.UserId == null || s.UserId == null);
+
+            response = response.Where(a => query.GetRequestedTypes().Contains(a.GetType()));
 
             if (!string.IsNullOrWhiteSpace(query.Name))
             {

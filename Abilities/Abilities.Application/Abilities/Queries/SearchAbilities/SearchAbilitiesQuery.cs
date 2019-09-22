@@ -1,7 +1,9 @@
 ﻿using Abilities.Application.Abilities.Enums;
 using Abilities.Application.Abilities.Queries.Dtos;
+using Abilities.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,5 +24,26 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
         public bool SearchAbilities() => !Types.Any() || Types.Any(t => t == AbilityType.Ability);
         public bool SearchMysticalPowers() => !Types.Any() || Types.Any(t => t == AbilityType.MysticalPower);
         public bool SearchRituals() => !Types.Any() || Types.Any(t => t == AbilityType.Ritual);
+
+        public IEnumerable<Type> GetRequestedTypes()
+        {
+            List<Type> requestedTypes = new List<Type>();
+            if (SearchAbilities())
+            {
+                requestedTypes.Add(typeof(Ability));
+            }
+
+            if (SearchMysticalPowers())
+            {
+                requestedTypes.Add(typeof(MysticalPower));
+            }
+
+            if (SearchRituals())
+            {
+                requestedTypes.Add(typeof(Ritual));
+            }
+
+            return requestedTypes;
+        }
     }
 }
