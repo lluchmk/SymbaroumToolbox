@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Abilities.Application.Abilities.Queries.SearchAbilities;
-using Abilities.Application.Infrastructure.Automapper;
 using Abilities.Application.Interfaces.Repositories;
 using AutoMapper;
 using MediatR;
@@ -27,6 +26,7 @@ using Abilities.Application.Users;
 using Abilities.Application.Options;
 using Abilities.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Abilities.Application.Infrastructure.Mapper;
 
 namespace Abilities.API
 {
@@ -66,12 +66,11 @@ namespace Abilities.API
                     options.RequireHttpsMetadata = authConfig.RequiredHttpsMetadata;
                 });
 
-            services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
-
             services.AddHttpContextAccessor();
 
             // Add services
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IMapperService, MapperService>();
 
             // Add repositories
             services.AddScoped<IAbilitiesRepository, AbilitiesRepository>();

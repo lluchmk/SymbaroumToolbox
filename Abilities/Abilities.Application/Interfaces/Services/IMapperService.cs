@@ -1,4 +1,5 @@
-﻿using Abilities.Application.Abilities.Queries.Dtos;
+﻿using Abilities.Application.Abilities.Commands.CreateAbility;
+using Abilities.Application.Abilities.Queries.Dtos;
 using Abilities.Domain.Entities;
 using System.Collections.Generic;
 
@@ -6,6 +7,10 @@ namespace Abilities.Application.Interfaces.Services
 {
     public interface IMapperService
     {
-        AbilitiesListViewModel MapToAbilitiesListViewModel(IEnumerable<BaseAbility> abilities);
+        AbilitiesListViewModel MapEntitiesToAbilitiesListViewModel(IEnumerable<BaseAbility> abilities);
+
+        BaseAbility MapCreateAbilityCommandToEntity(CreateAbilityCommand command);
+
+        BaseAbilityDto MapEntityToBaseAbilityDto(BaseAbility baseAbility);
     }
 }

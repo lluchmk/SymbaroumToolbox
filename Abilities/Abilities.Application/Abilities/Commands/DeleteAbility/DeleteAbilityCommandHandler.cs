@@ -1,10 +1,8 @@
 ﻿using Abilities.Application.Abilities.Queries.Dtos;
 using Abilities.Application.Exceptions;
 using Abilities.Application.Interfaces.Repositories;
-using Abilities.Domain.Entities;
-using AutoMapper;
+using Abilities.Application.Interfaces.Services;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,12 +11,12 @@ namespace Abilities.Application.Abilities.Commands.DeleteAbility
     public class DeleteAbilityCommandHandler : IRequestHandler<DeleteAbilityCommand, BaseAbilityDto>
     {
         private readonly IAbilitiesRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IMapperService _mapperService;
 
-        public DeleteAbilityCommandHandler(IAbilitiesRepository repository, IMapper mapper)
+        public DeleteAbilityCommandHandler(IAbilitiesRepository repository, IMapperService mapperService)
         {
             _repository = repository;
-            _mapper = mapper;
+            _mapperService = mapperService;
         }
 
         public async Task<BaseAbilityDto> Handle(DeleteAbilityCommand request, CancellationToken cancellationToken)
@@ -31,23 +29,7 @@ namespace Abilities.Application.Abilities.Commands.DeleteAbility
 
             await _repository.Delete(ability, cancellationToken);
 
-            Type dtoType;
-
-            if (ability.GetType() == typeof(Ability))
-            {
-                dtoType = typeof(AbilityDto);
-            }
-            else if (ability.GetType() == typeof(MysticalPower))
-            {
-                dtoType = typeof(MysticalPowerDto);
-            }
-            else
-            {
-                dtoType = typeof(Ritual);
-            }
-
-            var response = _mapper.Map(ability, ability.GetType(), dtoType) as BaseAbilityDto;
-
+            var response = _mapperService.MapEntityToBaseAbilityDto(ability);
             return response;
         }
     }

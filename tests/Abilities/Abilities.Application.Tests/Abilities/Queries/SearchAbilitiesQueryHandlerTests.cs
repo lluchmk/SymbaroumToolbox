@@ -54,7 +54,7 @@ namespace Abilities.Application.Tests.Abilities.Queries
                 .ReturnsAsync(abilities);
 
             var expectedResponse = _fixture.Create<AbilitiesListViewModel>();
-            _mapperService.Setup(m => m.MapToAbilitiesListViewModel(abilities))
+            _mapperService.Setup(m => m.MapEntitiesToAbilitiesListViewModel(abilities))
                 .Returns(expectedResponse);
 
             // Act
@@ -135,7 +135,7 @@ namespace Abilities.Application.Tests.Abilities.Queries
             var response = await _sut.Handle(request, cancellationToken);
 
             // Assert
-            _mapperService.Verify(m => m.MapToAbilitiesListViewModel(
+            _mapperService.Verify(m => m.MapEntitiesToAbilitiesListViewModel(
                 It.Is<IEnumerable<BaseAbility>>(a => a == abilities)));
         }
 
