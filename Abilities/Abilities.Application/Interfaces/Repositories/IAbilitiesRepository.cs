@@ -8,11 +8,9 @@ namespace Abilities.Application.Interfaces.Repositories
 {
     public interface IAbilitiesRepository
     {
-        Task<IEnumerable<TAbility>> Search<TAbility>(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
-            where TAbility : BaseAbility;
+        Task<IEnumerable<BaseAbility>> Search(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken);
 
-        Task<int> Create<TAbility>(TAbility ability, CancellationToken cancellationToken)
-            where TAbility : BaseAbility;
+        Task<int> Create(BaseAbility ability, CancellationToken cancellationToken);
 
         Task<BaseAbility> GetById(int abilityId, CancellationToken cancellationToken);
 

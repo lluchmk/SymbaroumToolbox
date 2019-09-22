@@ -2,6 +2,7 @@
 using Abilities.Application.Interfaces.Repositories;
 using Abilities.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -34,8 +35,20 @@ namespace Abilities.Persistence.Repositories
             return await response.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> Create<TAbility>(TAbility baseAbility, CancellationToken cancellationToken)
-            where TAbility : BaseAbility
+        public async Task<IEnumerable<BaseAbility>> Search(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
+        {
+            var response = _context.Abilities
+                .Where(s => s.UserId == null || s.UserId == null);
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                response = response.Where(s => s.Name.IndexOf(query.Name, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            return await response.ToListAsync();
+        }
+
+        public async Task<int> Create(BaseAbility baseAbility, CancellationToken cancellationToken)
         {
             await _context.Abilities.AddAsync(baseAbility, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

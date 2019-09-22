@@ -33,22 +33,27 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
                 userId = _usersService.GetUserId();
             }
 
+            var allAbilities = await _repository.Search(request, userId, cancellationToken);
+
             IEnumerable<Ability> abilities = Enumerable.Empty<Ability>();
             if (request.SearchAbilities())
             {
-                abilities = await _repository.Search<Ability>(request, userId, cancellationToken);
+                abilities = allAbilities.Where(a => a.GetType() == typeof(Ability))
+                    .Cast<Ability>();
             }
 
             IEnumerable<MysticalPower> mysticalPowers = Enumerable.Empty<MysticalPower>();
             if (request.SearchMysticalPowers())
             {
-                mysticalPowers = await _repository.Search<MysticalPower>(request, userId, cancellationToken);
+                mysticalPowers = allAbilities.Where(a => a.GetType() == typeof(MysticalPower))
+                    .Cast<MysticalPower>();
             }
 
             IEnumerable<Ritual> rituals = Enumerable.Empty<Ritual>();
             if (request.SearchRituals())
             {
-                rituals = await _repository.Search<Ritual>(request, userId, cancellationToken);
+                rituals = allAbilities.Where(a => a.GetType() == typeof(Ritual))
+                    .Cast<Ritual>();
             }
 
             var viewModel = new AbilitiesListViewModel
