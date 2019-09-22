@@ -22,7 +22,7 @@ namespace Abilities.Persistence.Repositories
         public async Task<IEnumerable<BaseAbility>> Search(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
         {
             var response = _context.Abilities
-                .Where(s => s.UserId == null || s.UserId == null);
+                .Where(s => s.UserId == null || s.UserId == userId);
 
             response = response.Where(a => query.GetRequestedTypes().Contains(a.GetType()));
 
