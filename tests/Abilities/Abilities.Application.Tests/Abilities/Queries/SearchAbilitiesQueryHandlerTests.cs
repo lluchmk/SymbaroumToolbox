@@ -1,5 +1,4 @@
-﻿using Abilities.Application.Abilities.Enums;
-using Abilities.Application.Abilities.Queries.Dtos;
+﻿using Abilities.Application.Abilities.Queries.Dtos;
 using Abilities.Application.Abilities.Queries.SearchAbilities;
 using Abilities.Application.Interfaces.Repositories;
 using Abilities.Application.Interfaces.Services;
@@ -8,8 +7,6 @@ using AutoFixture;
 using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -41,64 +38,38 @@ namespace Abilities.Application.Tests.Abilities.Queries
         [Fact]
         public async Task Handle_ReturnsExpectedResponse()
         {
-            // Arrange
-            var request = new SearchAbilitiesQuery
-            {
-                Name = string.Empty,
-                Types = Enumerable.Empty<AbilityType>()
-            };
-            var cancellationToken = GetCancellationToken();
+            var request = _fixture.Create<SearchAbilitiesQuery>();
 
-            var abilities = CreateAll();
-            _abilitiesRepository.Setup(r => r.Search(request, It.IsAny<string>(), cancellationToken))
+            var abilities = _fixture.CreateMany<BaseAbility>();
+            _abilitiesRepository.Setup(r => r.Search(request, It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(abilities);
 
             var expectedResponse = _fixture.Create<AbilitiesListViewModel>();
             _mapperService.Setup(m => m.MapEntitiesToAbilitiesListViewModel(abilities))
                 .Returns(expectedResponse);
 
-            // Act
-            var response = await _sut.Handle(request, cancellationToken);
+            var response = await _sut.Handle(request, It.IsAny<CancellationToken>());
 
-            // Assert
             response.Should().Be(expectedResponse);
         }
 
         [Fact]
         public async Task Handle_WhenNotAuthenticated_SearchesWithoutUserId()
         {
-            // Arrange
-            var request = new SearchAbilitiesQuery
-            {
-                Name = string.Empty,
-                Types = Enumerable.Empty<AbilityType>()
-            };
-            var cancellationToken = GetCancellationToken();
-
             _usersService.Setup(u => u.IsUserAuthenticated())
                 .Returns(false);
 
-            // Act
-            var response = await _sut.Handle(request, cancellationToken);
+            var response = await _sut.Handle(It.IsAny<SearchAbilitiesQuery>(), It.IsAny<CancellationToken>());
 
-            // Assert
             _abilitiesRepository.Verify(a => a.Search(
-                It.Is<SearchAbilitiesQuery>(q => q == request),
+                It.IsAny<SearchAbilitiesQuery>(),
                 It.Is<string>(u => u == null),
-                It.Is<CancellationToken>(c => c == cancellationToken)));
+                It.IsAny<CancellationToken>()));
         }
 
         [Fact]
         public async Task Handle_WhenAuthenticated_SearchesIncludingUserId()
         {
-            // Arrange
-            var request = new SearchAbilitiesQuery
-            {
-                Name = string.Empty,
-                Types = Enumerable.Empty<AbilityType>()
-            };
-            var cancellationToken = GetCancellationToken();
-
             _usersService.Setup(u => u.IsUserAuthenticated())
                 .Returns(true);
 
@@ -107,72 +78,13 @@ namespace Abilities.Application.Tests.Abilities.Queries
                 .Returns(userId);
 
             // Act
-            var response = await _sut.Handle(request, cancellationToken);
+            var response = await _sut.Handle(It.IsAny<SearchAbilitiesQuery>(), It.IsAny<CancellationToken>());
 
             // Assert
             _abilitiesRepository.Verify(a => a.Search(
-                It.Is<SearchAbilitiesQuery>(q => q == request),
+                It.IsAny<SearchAbilitiesQuery>(),
                 It.Is<string>(u => u == userId),
-                It.Is<CancellationToken>(c => c == cancellationToken)));
-        }
-
-        [Fact]
-        public async Task Handle_CorrectlyMapsResponse()
-        {
-            // Arrange
-            var request = new SearchAbilitiesQuery
-            {
-                Name = string.Empty,
-                Types = Enumerable.Empty<AbilityType>()
-            };
-            var cancellationToken = GetCancellationToken();
-
-            var abilities = CreateAll();
-            _abilitiesRepository.Setup(r => r.Search(request, It.IsAny<string>(), cancellationToken))
-                .ReturnsAsync(abilities);
-
-            // Act
-            var response = await _sut.Handle(request, cancellationToken);
-
-            // Assert
-            _mapperService.Verify(m => m.MapEntitiesToAbilitiesListViewModel(
-                It.Is<IEnumerable<BaseAbility>>(a => a == abilities)));
-        }
-
-        private CancellationToken GetCancellationToken()
-        {
-            var source = new CancellationTokenSource();
-            return source.Token;
-        }
-
-        private IEnumerable<TAbility> CreateAbilities<TAbility>(string userId = null)
-            where TAbility : BaseAbility
-        {
-            var abilities = _fixture.Build<TAbility>()
-                .Without(a => a.UserId)
-                .CreateMany();
-
-            if (!string.IsNullOrWhiteSpace(userId))
-            {
-                var userAbilities = _fixture.Build<TAbility>()
-                .With(a => a.UserId, userId)
-                .CreateMany();
-
-                abilities = Enumerable.Concat(abilities, userAbilities);
-            }
-
-            return abilities;
-        }
-
-        private IEnumerable<BaseAbility> CreateAll(string userId = null)
-        {
-            return new IEnumerable<BaseAbility>[]
-                {
-                    CreateAbilities<Ability>(userId),
-                    CreateAbilities<MysticalPower>(userId),
-                    CreateAbilities<Ritual>(userId)
-                }
-                .SelectMany(a => a);
+                It.IsAny<CancellationToken>()));
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
             }
 
             var allAbilities = await _repository.Search(request, userId, cancellationToken);
+
             var viewModel = _mapperService.MapEntitiesToAbilitiesListViewModel(allAbilities);
 
             return viewModel;
