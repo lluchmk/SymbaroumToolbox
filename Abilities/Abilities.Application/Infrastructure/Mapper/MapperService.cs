@@ -1,4 +1,5 @@
 ﻿using Abilities.Application.Abilities.Commands.CreateAbility;
+using Abilities.Application.Abilities.Commands.UpdateAbility;
 using Abilities.Application.Abilities.Enums;
 using Abilities.Application.Abilities.Queries.Dtos;
 using Abilities.Application.Interfaces.Services;
@@ -70,6 +71,42 @@ namespace Abilities.Application.Infrastructure.Mapper
             {
                 return new RitualDto(baseAbility as Ritual);
             }
+        }
+
+        public BaseAbility MapUpdateAbilityCommandToAbility(UpdateAbilityCommandBody requestBody, BaseAbility baseAbility)
+        {
+            var abilityType = baseAbility.GetType();
+
+            baseAbility.Name = requestBody.Name ?? baseAbility.Name;
+            baseAbility.Description = requestBody.Description ?? baseAbility.Description;
+
+            if (abilityType == typeof(Ability) || abilityType == typeof(MysticalPower))
+            {
+                var ability = baseAbility as Ability;
+
+                ability.Novice.Type = requestBody.NoviceType ?? ability.Novice.Type;
+                ability.Novice.Description = requestBody.NoviceDescription ?? ability.Novice.Description;
+
+                ability.Adept.Type = requestBody.AdeptType ?? ability.Adept.Type;
+                ability.Adept.Description = requestBody.AdeptDescription ?? ability.Adept.Description;
+
+                ability.Master.Type = requestBody.MasterType ?? ability.Master.Type;
+                ability.Master.Description = requestBody.MasterDescription ?? ability.Master.Description;
+
+                if (abilityType == typeof(MysticalPower))
+                {
+                    var mysticalPower = ability as MysticalPower;
+                    mysticalPower.Material = requestBody.Material ?? mysticalPower.Material;
+                }
+
+            }
+            else
+            {
+                var ritual = baseAbility as Ritual;
+                ritual.Tradition = requestBody.Tradition ?? ritual.Tradition;
+            }
+
+            return baseAbility;
         }
 
         private TAbility CreateAbilityCommandToBaseAbility<TAbility>(CreateAbilityCommand command, TAbility destination)
