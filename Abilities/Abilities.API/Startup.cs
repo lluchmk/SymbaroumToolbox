@@ -110,7 +110,7 @@ namespace Abilities.API
 
             app.UseRouting();
 
-            app.UseAuthentication(); // TODO: Check if needed
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseHttpsRedirection();

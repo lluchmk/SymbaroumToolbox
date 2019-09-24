@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Abilities.Application.Tests.Abilities.Queries
+namespace Abilities.Application.Tests.Abilities.Commands
 {
     public class DeleteAbilityCommandHandlerTests
     {
