@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Abilities.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AbilitiesController : ControllerBase
     {
         private readonly IMediator _mediator;

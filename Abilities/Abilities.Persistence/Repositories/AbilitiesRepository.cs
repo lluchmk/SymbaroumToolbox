@@ -21,7 +21,8 @@ namespace Abilities.Persistence.Repositories
 
         public async Task<IEnumerable<BaseAbility>> Search(SearchAbilitiesQuery query, string userId, CancellationToken cancellationToken)
         {
-            var response = _context.Abilities
+            var response = (await _context.Abilities
+                .ToListAsync())
                 .Where(s => s.UserId == null || s.UserId == userId);
 
             response = response.Where(a => query.GetRequestedTypes().Contains(a.GetType()));
@@ -31,7 +32,7 @@ namespace Abilities.Persistence.Repositories
                 response = response.Where(s => s.Name.IndexOf(query.Name, StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            return await response.ToListAsync();
+            return response;
         }
 
         public async Task<int> Create(BaseAbility baseAbility, CancellationToken cancellationToken)

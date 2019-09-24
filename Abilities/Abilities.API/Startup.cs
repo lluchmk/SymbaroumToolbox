@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.IdentityModel.Logging;
@@ -27,6 +28,7 @@ using Abilities.Application.Options;
 using Abilities.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Abilities.Application.Infrastructure.Mapper;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Abilities.API
 {
@@ -67,6 +69,7 @@ namespace Abilities.API
                 });
 
             services.AddHttpContextAccessor();
+            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
 
             // Add services
             services.AddScoped<IUsersService, UsersService>();
@@ -84,16 +87,16 @@ namespace Abilities.API
             services.AddDbContext<AbilitiesDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            services.
-                AddMvc(/* TODO: Add custom filters */)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddControllers()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             // TODO: Register FluentValidation
 
             services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDev())
             {
@@ -105,17 +108,25 @@ namespace Abilities.API
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
+            app.UseRouting();
+
+            app.UseAuthentication(); // TODO: Check if needed
+            app.UseAuthorization();
+
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 
     public static class EnvironmentExtesions
     {
-        public static bool IsDev(this IHostingEnvironment env)
+        public static bool IsDev(this IWebHostEnvironment env)
         {
-            return env.IsDevelopment() || env.IsEnvironment("DevelopmentDocker");
+            return  env.IsDevelopment() || env.IsEnvironment("DevelopmentDocker");
         }
     }
 }
