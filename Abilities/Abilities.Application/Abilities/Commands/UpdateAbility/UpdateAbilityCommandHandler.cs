@@ -26,9 +26,9 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
                 throw new InvalidAbilityIdException();
             }
 
-            _mapperService.MapUpdateAbilityCommandToAbility(request.Body, ability);
+            var updatedAbility = _mapperService.MapUpdateAbilityCommandToAbility(request.Body, ability);
 
-            await _repository.Update(ability, cancellationToken);
+            await _repository.Update(updatedAbility, cancellationToken);
 
             return Unit.Value;
         }
