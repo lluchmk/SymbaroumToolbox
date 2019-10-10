@@ -221,15 +221,107 @@ namespace Abilities.Persistence.Tests
             response.Should().BeNull();
         }
 
-        // -- Update
-        // updates ability and saves
+        [Fact]
+        public async Task Update_UpdatesTheAbility()
+        {
+            var ability = _fixture.Build<Ability>()
+                .With(a => a.Name, "AbilityName")
+                .Create();
 
-        // -- Delete
-        // remoes ability and saves
+            var options = GetDbContextOptions("Update");
 
-        // -- IsAbilityOwner
-        // When yes returns true
-        // when no returns false
+            using (var saveContext = new AbilitiesDbContext(options))
+            {
+                await saveContext.AddAsync(ability);
+                await saveContext.SaveChangesAsync();
+            }
+
+            ability.Name = "UpdatedName";
+
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            await sut.Update(ability, CancellationToken);
+
+            context.Abilities.Should().HaveElementAt(0, ability);
+        }
+
+        [Fact]
+        public async Task Delete_RemovesTheAbility()
+        {
+            var ability = _fixture.Create<Ability>();
+
+            var options = GetDbContextOptions("Delete");
+
+            using (var saveContext = new AbilitiesDbContext(options))
+            {
+                await saveContext.AddAsync(ability);
+                await saveContext.SaveChangesAsync();
+            }
+
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            await sut.Delete(ability, CancellationToken);
+
+            context.Abilities.Should().NotContain(ability);
+        }
+
+        [Fact]
+        public async Task IsAbilityOwner_WhenUserOwnsAbility_ReturnsTrue()
+        {
+            var userId = "TheUserId";
+            var abilityId = 42;
+
+            var ability = new Ability
+            {
+                Id = abilityId,
+                UserId = userId
+            };
+
+            var options = GetDbContextOptions("OwnerTrue");
+
+            using (var saveContext = new AbilitiesDbContext(options))
+            {
+                await saveContext.AddAsync(ability);
+                await saveContext.SaveChangesAsync();
+            }
+
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            var response = await sut.IsAbilityOwner(abilityId, userId);
+
+            response.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task IsAbilityOwner_WhenUserDoesNotOwnAbility_ReturnsFalse()
+        {
+            var userId = "TheUserId";
+            var abilityId = 42;
+
+            var ability = new Ability
+            {
+                Id = abilityId,
+                UserId = userId
+            };
+
+            var options = GetDbContextOptions("OwnerFalse");
+
+            using (var saveContext = new AbilitiesDbContext(options))
+            {
+                await saveContext.AddAsync(ability);
+                await saveContext.SaveChangesAsync();
+            }
+
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            var response = await sut.IsAbilityOwner(abilityId, "AnotherUser");
+
+            response.Should().BeFalse();
+        }
 
         private IEnumerable<BaseAbility> CreateDefaultAbilities()
         {
