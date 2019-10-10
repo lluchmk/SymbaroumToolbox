@@ -1,4 +1,6 @@
-﻿namespace Abilities.Domain.Entities
+﻿using System;
+
+namespace Abilities.Domain.Entities
 {
     public class MysticalPower : Ability
     {
@@ -7,15 +9,16 @@
         public MysticalPower()
         { }
 
-        public MysticalPower(Ability ability)
+        public override bool Equals(object obj)
         {
-            Id = ability.Id;
-            UserId = ability.UserId;
-            Name = ability.Name;
-            Description = ability.Description;
-            Novice = ability.Novice;
-            Adept = ability.Adept;
-            Master = ability.Master;
+            return obj is MysticalPower power &&
+                   base.Equals(obj) &&
+                   Material == power.Material;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), Material);
         }
     }
 }

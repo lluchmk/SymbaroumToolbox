@@ -25,7 +25,6 @@ namespace Abilities.Persistence.Tests
             _fixture = new Fixture();
         }
 
-        // -- Search
         [Fact]
         public async Task Search_WhenNoSearchCriteriaAndNoUser_ReturnsAllDefaultAbilities()
         {
@@ -185,10 +184,42 @@ namespace Abilities.Persistence.Tests
             response.Should().Be(ability.Id);
         }
 
-        // -- GetById
-         
-        // when existting returns single ability
-        // when not existing returns null
+         [Fact]
+        public async Task GetById_WhenExisting_ReturnsAbility()
+        {
+            var id = 42;
+            var ability = _fixture.Build<Ability>()
+                .With(a => a.Id, id)
+                .Create();
+
+            var options = GetDbContextOptions("FindByIdExisting");
+
+            using (var saveContext = new AbilitiesDbContext(options))
+            {
+                saveContext.Add(ability);
+                await saveContext.SaveChangesAsync();
+            }
+
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            var response = await sut.GetById(id, CancellationToken);
+
+            response.Should().Be(ability);
+        }
+
+        [Fact]
+        public async Task GetById_WhenNotExisting_ReturnsNull()
+        {
+            var id = 42;
+
+            var options = GetDbContextOptions("FindByIdNotExisting");
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+            var response = await sut.GetById(id, CancellationToken);
+
+            response.Should().BeNull();
+        }
 
         // -- Update
         // updates ability and saves
