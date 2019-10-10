@@ -153,11 +153,40 @@ namespace Abilities.Persistence.Tests
             response.Should().BeEquivalentTo(abilitiesContainingName);
         }
 
-        // -- Create
-        // Inserts ability and saves
-        // Returns created ability id
+        [Fact]
+        public async Task Create_InsertsTheNewAbilityInto()
+        {
+            var ability = new Ability()
+            {
+                Name = "TheCreatedAbility"
+            };
+
+            var options = GetDbContextOptions("CreateInsertsTest");
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            await sut.Create(ability, CancellationToken);
+
+            context.Abilities.Should().HaveCount(1)
+                .And.HaveElementAt(0, ability);
+        }
+
+        [Fact]
+        public async Task Create_ReturnsCreatedAbilityId()
+        {
+            var ability = _fixture.Create<Ability>();
+
+            var options = GetDbContextOptions("CreateReturnsTest");
+            using var context = new AbilitiesDbContext(options);
+            var sut = new AbilitiesRepository(context);
+
+            var response = await sut.Create(ability, CancellationToken);
+
+            response.Should().Be(ability.Id);
+        }
 
         // -- GetById
+         
         // when existting returns single ability
         // when not existing returns null
 
