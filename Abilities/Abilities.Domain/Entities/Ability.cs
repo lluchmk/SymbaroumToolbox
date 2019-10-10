@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Abilities.Domain.Entities
 {
@@ -7,14 +8,13 @@ namespace Abilities.Domain.Entities
         public AbilityTier Novice { get; set; }
         public AbilityTier Adept { get; set; }
         public AbilityTier Master { get; set; }
-
         public override bool Equals(object obj)
         {
             return obj is Ability ability &&
                    base.Equals(obj) &&
-                   Novice.Equals(ability.Novice) &&
-                   Adept.Equals(ability.Adept) &&
-                   Master.Equals(ability.Master);
+                   EqualityComparer<AbilityTier>.Default.Equals(Novice, ability.Novice) &&
+                   EqualityComparer<AbilityTier>.Default.Equals(Adept, ability.Adept) &&
+                   EqualityComparer<AbilityTier>.Default.Equals(Master, ability.Master);
         }
 
         public override int GetHashCode()

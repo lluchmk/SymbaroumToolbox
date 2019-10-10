@@ -17,18 +17,6 @@ namespace Abilities.Domain.Entities
             Description = description;
         }
 
-        public override bool Equals(object obj)
-        {
-            return obj is AbilityTier tier &&
-                   Type == tier.Type &&
-                   Description == tier.Description;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Type, Description);
-        }
-
         // TODO: Dictionary of data to reference on the description??
     }
 }
