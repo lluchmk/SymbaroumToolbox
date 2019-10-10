@@ -34,7 +34,7 @@ namespace Abilities.Persistence.Tests
 
             using (var saveContext = new AbilitiesDbContext(options))
             {
-                saveContext.AddRange(abilities);
+                await saveContext.AddRangeAsync(abilities);
                 await saveContext.SaveChangesAsync();
             }
 
@@ -64,8 +64,8 @@ namespace Abilities.Persistence.Tests
 
             using (var saveContext = new AbilitiesDbContext(options))
             {
-                saveContext.AddRange(defaultAbilities);
-                saveContext.AddRange(userAbilities);
+                await saveContext.AddRangeAsync(defaultAbilities);
+                await saveContext.AddRangeAsync(userAbilities);
                 await saveContext.SaveChangesAsync();
             }
 
@@ -94,7 +94,7 @@ namespace Abilities.Persistence.Tests
 
             using (var saveContext = new AbilitiesDbContext(options))
             {
-                saveContext.AddRange(abilities);
+                await saveContext.AddRangeAsync(abilities);
                 await saveContext.SaveChangesAsync();
             }
 
@@ -133,8 +133,8 @@ namespace Abilities.Persistence.Tests
 
             using (var saveContext = new AbilitiesDbContext(options))
             {
-                saveContext.AddRange(abilities);
-                saveContext.AddRange(abilitiesContainingName);
+                await saveContext.AddRangeAsync(abilities);
+                await saveContext.AddRangeAsync(abilitiesContainingName);
                 await saveContext.SaveChangesAsync();
             }
 
@@ -196,7 +196,7 @@ namespace Abilities.Persistence.Tests
 
             using (var saveContext = new AbilitiesDbContext(options))
             {
-                saveContext.Add(ability);
+                await saveContext.AddAsync(ability);
                 await saveContext.SaveChangesAsync();
             }
 
