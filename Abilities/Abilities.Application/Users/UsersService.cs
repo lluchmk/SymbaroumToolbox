@@ -1,5 +1,6 @@
 ﻿using Abilities.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Abilities.Application.Users
 {
@@ -19,7 +20,8 @@ namespace Abilities.Application.Users
 
         public string GetUserId()
         {
-            return _contextAccessor.HttpContext.User.FindFirst("sub").Value;
+            return _contextAccessor.HttpContext.User
+                .FindFirst(JwtRegisteredClaimNames.Sub).Value;
         }
     }
 }
