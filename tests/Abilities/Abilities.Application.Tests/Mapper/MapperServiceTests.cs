@@ -7,11 +7,7 @@ using Abilities.Domain.Entities;
 using Abilities.Domain.Enums;
 using AutoFixture;
 using FluentAssertions;
-using FluentAssertions.Execution;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Abilities.Application.Tests.Mapper
@@ -83,7 +79,8 @@ namespace Abilities.Application.Tests.Mapper
 
             var response = _sut.MapCreateAbilityCommandToEntity(command);
 
-            response.Should().BeEquivalentTo(new Ability { 
+            response.Should().BeEquivalentTo(new Ability
+            {
                 Name = command.Name,
                 Description = command.Description,
                 Novice = new AbilityTier
