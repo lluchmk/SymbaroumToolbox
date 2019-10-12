@@ -29,7 +29,7 @@ namespace Abilities.Application.Abilities.Commands.DeleteAbility
 
             await _repository.Delete(ability, cancellationToken);
 
-            var response = _mapperService.MapEntityToBaseAbilityDto(ability);
+            var response = _mapperService.MapEntityToDto(ability);
             return response;
         }
     }

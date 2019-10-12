@@ -58,7 +58,7 @@ namespace Abilities.Application.Tests.Abilities.Commands
                 .ReturnsAsync(ability);
 
             var abilityDto = _fixture.Create<BaseAbilityDto>();
-            _mapperService.Setup(m => m.MapEntityToBaseAbilityDto(ability))
+            _mapperService.Setup(m => m.MapEntityToDto(ability))
                 .Returns(abilityDto);
 
             var response = await _sut.Handle(new DeleteAbilityCommand(), It.IsAny<CancellationToken>());

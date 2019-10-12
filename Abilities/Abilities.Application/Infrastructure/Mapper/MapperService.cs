@@ -57,7 +57,7 @@ namespace Abilities.Application.Infrastructure.Mapper
             return ability;
         }
 
-        public BaseAbilityDto MapEntityToBaseAbilityDto(BaseAbility baseAbility)
+        public BaseAbilityDto MapEntityToDto(BaseAbility baseAbility)
         {
             if (baseAbility.GetType() == typeof(Ability))
             {

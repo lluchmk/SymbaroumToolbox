@@ -12,7 +12,7 @@ namespace Abilities.Application.Interfaces.Services
 
         BaseAbility MapCreateAbilityCommandToEntity(CreateAbilityCommand command);
 
-        BaseAbilityDto MapEntityToBaseAbilityDto(BaseAbility baseAbility);
+        BaseAbilityDto MapEntityToDto(BaseAbility baseAbility);
 
         BaseAbility MapUpdateAbilityCommandToAbility(UpdateAbilityCommandBody requestBody, BaseAbility baseAbility);
     }
