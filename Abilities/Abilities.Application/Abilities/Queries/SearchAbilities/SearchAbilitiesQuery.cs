@@ -21,10 +21,6 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
         [FromQuery]
         public IEnumerable<AbilityType> Types { get; set; }
 
-        public bool SearchAbilities() => !Types.Any() || Types.Any(t => t == AbilityType.Ability);
-        public bool SearchMysticalPowers() => !Types.Any() || Types.Any(t => t == AbilityType.MysticalPower);
-        public bool SearchRituals() => !Types.Any() || Types.Any(t => t == AbilityType.Ritual);
-
         public IEnumerable<Type> GetRequestedTypes()
         {
             List<Type> requestedTypes = new List<Type>();
@@ -45,5 +41,9 @@ namespace Abilities.Application.Abilities.Queries.SearchAbilities
 
             return requestedTypes;
         }
+
+        private bool SearchAbilities() => !Types.Any() || Types.Any(t => t == AbilityType.Ability);
+        private bool SearchMysticalPowers() => !Types.Any() || Types.Any(t => t == AbilityType.MysticalPower);
+        private bool SearchRituals() => !Types.Any() || Types.Any(t => t == AbilityType.Ritual);
     }
 }
