@@ -1,7 +1,7 @@
 ﻿using Abilities.Domain.Entities;
 using Abilities.Domain.Enums;
 
-namespace Abilities.Application.Abilities.Queries.Dtos
+namespace Abilities.Application.Abilities.Dtos
 {
     public class AbilityDto : BaseAbilityDto
     {

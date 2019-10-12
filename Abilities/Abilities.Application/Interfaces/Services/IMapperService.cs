@@ -1,6 +1,6 @@
 ﻿using Abilities.Application.Abilities.Commands.CreateAbility;
 using Abilities.Application.Abilities.Commands.UpdateAbility;
-using Abilities.Application.Abilities.Queries.Dtos;
+using Abilities.Application.Abilities.Dtos;
 using Abilities.Domain.Entities;
 using System.Collections.Generic;
 

@@ -1,5 +1,5 @@
-﻿using Abilities.Application.Abilities.Enums;
-using Abilities.Application.Abilities.Queries.Dtos;
+﻿using Abilities.Application.Abilities.Dtos;
+using Abilities.Application.Abilities.Enums;
 using Abilities.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

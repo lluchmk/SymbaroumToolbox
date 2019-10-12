@@ -1,7 +1,7 @@
 ﻿using Abilities.Application.Abilities.Commands.CreateAbility;
 using Abilities.Application.Abilities.Commands.UpdateAbility;
+using Abilities.Application.Abilities.Dtos;
 using Abilities.Application.Abilities.Enums;
-using Abilities.Application.Abilities.Queries.Dtos;
 using Abilities.Application.Interfaces.Services;
 using Abilities.Domain.Entities;
 using System;

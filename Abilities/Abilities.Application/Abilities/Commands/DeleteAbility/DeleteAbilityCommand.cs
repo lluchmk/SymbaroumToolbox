@@ -1,4 +1,4 @@
-﻿using Abilities.Application.Abilities.Queries.Dtos;
+﻿using Abilities.Application.Abilities.Dtos;
 using MediatR;
 
 namespace Abilities.Application.Abilities.Commands.DeleteAbility

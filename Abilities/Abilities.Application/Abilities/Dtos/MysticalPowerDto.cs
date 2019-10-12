@@ -1,6 +1,6 @@
 ﻿using Abilities.Domain.Entities;
 
-namespace Abilities.Application.Abilities.Queries.Dtos
+namespace Abilities.Application.Abilities.Dtos
 {
     public class MysticalPowerDto : AbilityDto
     {

@@ -1,4 +1,4 @@
-﻿using Abilities.Application.Abilities.Queries.Dtos;
+﻿using Abilities.Application.Abilities.Dtos;
 using Abilities.Application.Interfaces.Repositories;
 using Abilities.Application.Interfaces.Services;
 using MediatR;
