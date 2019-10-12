@@ -6,6 +6,9 @@ namespace Abilities.Application.Abilities.Dtos
     {
         public string Material { get; set; }
 
+        public MysticalPowerDto()
+        { }
+
         public MysticalPowerDto(MysticalPower mysticalPower)
             : base(mysticalPower)
         {

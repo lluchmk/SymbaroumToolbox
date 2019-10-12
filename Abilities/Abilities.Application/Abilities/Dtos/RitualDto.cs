@@ -7,6 +7,9 @@ namespace Abilities.Application.Abilities.Dtos
     {
         public Tradition Tradition { get; set; }
 
+        public RitualDto()
+        { }
+
         public RitualDto(Ritual ritual)
             : base(ritual)
         {

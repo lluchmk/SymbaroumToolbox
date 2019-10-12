@@ -14,6 +14,9 @@ namespace Abilities.Application.Abilities.Dtos
         public ActionType MasterType { get; set; }
         public string MasterDescription { get; set; }
 
+        public AbilityDto()
+        { }
+
         public AbilityDto(Ability ability)
             : base(ability)
         {
