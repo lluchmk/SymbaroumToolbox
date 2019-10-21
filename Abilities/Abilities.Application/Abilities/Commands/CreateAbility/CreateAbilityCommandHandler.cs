@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Abilities.Application.Abilities.Commands.CreateAbility
 {
+
     public class CreateAbilityCommandHandler : IRequestHandler<CreateAbilityCommand, int>
     {
         private readonly IAbilitiesRepository _repository;

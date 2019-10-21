@@ -29,6 +29,8 @@ using Abilities.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Abilities.Application.Infrastructure.Mapper;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace Abilities.API
 {
@@ -82,6 +84,7 @@ namespace Abilities.API
             // TODO: Add pipeline behaviors
             services.AddMediatR(typeof(SearchAbilitiesQueryHandler).GetTypeInfo().Assembly);
 
+
             var connectionString = _config.GetConnectionString("Abilities");
             // Add DbContext using Postgress provider
             services.AddDbContext<AbilitiesDbContext>(options =>
@@ -89,8 +92,8 @@ namespace Abilities.API
 
             services
                 .AddControllers()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            // TODO: Register FluentValidation
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<SearchAbilitiesQueryValidator>());
 
             services.AddHttpClient();
         }
