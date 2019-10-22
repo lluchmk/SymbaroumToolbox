@@ -18,15 +18,15 @@ namespace Abilities.Application.Abilities.Commands.UpdateAbility
 
             RuleFor(c => c.Body.NoviceType)
                 .IsInEnum()
-                .When(c => c.Body.Tradition.HasValue);
+                .When(c => c.Body.NoviceType.HasValue);
 
             RuleFor(c => c.Body.AdeptType)
                 .IsInEnum()
-                .When(c => c.Body.Tradition.HasValue);
+                .When(c => c.Body.AdeptType.HasValue);
 
             RuleFor(c => c.Body.MasterType)
                 .IsInEnum()
-                .When(c => c.Body.Tradition.HasValue);
+                .When(c => c.Body.MasterType.HasValue);
         }
     }
 }

@@ -84,9 +84,8 @@ namespace Abilities.API
             // TODO: Add pipeline behaviors
             services.AddMediatR(typeof(SearchAbilitiesQueryHandler).GetTypeInfo().Assembly);
 
-
-            var connectionString = _config.GetConnectionString("Abilities");
             // Add DbContext using Postgress provider
+            var connectionString = _config.GetConnectionString("Abilities");
             services.AddDbContext<AbilitiesDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
